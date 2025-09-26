@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>    
+<body>
+    <h1>Welcome to Bulk Email Sender</h1>
+    <form action="/config" method="GET">
+        <button type="submit">Configure Email Settings</button>
+    </form>
+</body>
+</html>

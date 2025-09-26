@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Email Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='configure.css') }}">
+</head>
+<body>
+    <h1>Configure Your Email Settings</h1>
+    
+    <!-- Form for adding email configuration -->
+    <form action="/config" method="POST">
+        <label for="sender_name">Your Name:</label>
+        <input type="text" id="sender_name" name="sender_name" required>
+
+        <label for="sender_email">Your Email:</label>
+        <input type="email" id="sender_email" name="sender_email" required>
+
+        <label for="sender_password">Your Email Password:</label>
+        <input type="password" id="sender_password" name="sender_password" required>
+
+        <label for="smtp_server">SMTP Server:</label>
+        <input type="text" id="smtp_server" name="smtp_server" placeholder="smtp.gmail.com" required>
+
+        <label for="smtp_port">SMTP Port:</label>
+        <input type="text" id="smtp_port" name="smtp_port" placeholder="587" required>
+
+        <button type="submit">Add Configuration</button>
+    </form>
+
+    <h2>Existing Configurations</h2>
+    <ul>
+        {% for config in configurations %}
+            <li>
+                {{ config.sender_name }} ({{ config.sender_email }}) - {{ config.smtp_server }}:{{ config.smtp_port }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Button below redirects to the send email page -->
+    <a href="{{ url_for('send_email') }}" class="send-mail-btn">Send Mails</a>
+
+</body>
+</html>

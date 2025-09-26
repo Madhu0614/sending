@@ -1,0 +1,311 @@
+/* General Styles */
+body {
+    background-color: #f3e5f5; /* Light purple background */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333; /* Dark grey text */
+    font-size: 1.1rem; /* Increased font size */
+    line-height: 1.8; /* Improved readability */
+}
+
+/* Header Styles */
+.header {
+    background-color: #673ab7; /* Medium purple */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Heading on Send Page */
+h2 {
+    color: #673ab7; /* Medium purple */
+    font-size: 2.8rem; /* Larger heading for better emphasis */
+    font-weight: 700;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Slight letter spacing for elegance */
+}
+
+/* Form Styles */
+form {
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    padding: 40px 60px; /* Balanced padding */
+    border-radius: 12px;
+    max-width: 800px; /* Centered form */
+    margin: 30px auto;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+form:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect */
+}
+
+/* Label Styles */
+label {
+    font-weight: 600;
+    color: #673ab7; /* Medium purple */
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 1.2rem; /* Larger font size for labels */
+}
+
+/* Input, Textarea, and Button Styles */
+input, textarea, button {
+    width: 100%;
+    padding: 16px; /* Balanced padding */
+    margin-bottom: 20px;
+    border: 2px solid #d1c4e9; /* Light purple border */
+    border-radius: 8px;
+    background-color: #ede7f6; /* Light purple background */
+    color: #333; /* Dark grey text */
+    font-size: 1.1rem; /* Increased font size */
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus, textarea:focus, button:focus {
+    border-color: #673ab7; /* Medium purple */
+    outline: none;
+    background-color: #d1c4e9; /* Light purple background */
+    box-shadow: 0 0 8px rgba(103, 58, 183, 0.4); /* Medium purple shadow */
+}
+
+/* Button Styles */
+button {
+    background-color: #673ab7; /* Medium purple */
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem; /* Balanced button font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    border: none;
+    padding: 14px 30px; /* Balanced button padding */
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+button:hover {
+    background-color: #5e35b1; /* Darker purple */
+    transform: translateY(-3px); /* Slight hover effect */
+}
+
+/* File Upload Styles */
+input[type="file"] {
+    background-color: #ede7f6; /* Light purple background */
+    border: 2px solid #673ab7; /* Medium purple border */
+    border-radius: 6px;
+    padding: 12px; /* Balanced padding */
+    transition: background-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+    background-color: #d1c4e9; /* Light purple background */
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    background-color: #673ab7; /* Medium purple */
+    color: white;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 1.2rem; /* Balanced font size */
+    font-weight: 600;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Progress Section */
+.progress {
+    background-color: #ede7f6; /* Light purple background */
+    border: 2px solid #d1c4e9; /* Light purple border */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+    font-size: 1.2rem; /* Slightly larger font size */
+    color: #333; /* Dark grey text */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+}
+
+.progress p {
+    margin: 10px 0;
+    font-weight: 600;
+    color: #673ab7; /* Medium purple */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    form {
+        width: 90%;
+        padding: 30px 20px; /* Adjusted for mobile */
+    }
+
+    h2 {
+        font-size: 2.4rem; /* Slightly smaller heading on mobile */
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+
+    input, textarea {
+        padding: 14px;
+    }
+
+    .progress {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .control-buttons {
+        flex-direction: column; /* Stack buttons vertically on smaller screens */
+        gap: 15px; /* Add more spacing between buttons */
+    }
+
+    .control-buttons button {
+        width: 100%; /* Make buttons full-width on smaller screens */
+        margin: 0 auto; /* Center align buttons */
+    }
+}
+
+/* Additional Styles for Better UI */
+.container {
+    padding: 20px;
+    min-height: 100vh; /* Ensure container fits the whole webpage */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card {
+    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #673ab7; /* Medium purple */
+    margin-bottom: 10px;
+}
+
+.card-body {
+    font-size: 1.1rem;
+    color: #333; /* Dark grey text */
+}
+
+.card-footer {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.card-footer button {
+    background-color: #673ab7; /* Medium purple */
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.card-footer button:hover {
+    background-color: #5e35b1; /* Darker purple */
+    transform: translateY(-3px);
+}
+
+/* Control Buttons Section */
+.control-buttons {
+    display: flex;
+    justify-content: center; /* Center align the buttons */
+    gap: 15px; /* Add spacing between buttons */
+    margin-top: 20px; /* Add some space above the buttons */
+}
+
+.control-buttons button {
+    background-color: #673ab7; /* Medium purple */
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem; /* Smaller font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    border: none;
+    padding: 10px 20px; /* Smaller padding */
+    border-radius: 6px; /* Slightly smaller border radius */
+    text-transform: uppercase;
+    letter-spacing: 0.5px; /* Slightly reduced letter spacing */
+}
+
+.control-buttons button:hover {
+    background-color: #5e35b1; /* Darker purple */
+    transform: translateY(-2px); /* Slight hover effect */
+}
+
+/* Status Message Styles */
+.status-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    animation: fadeIn 0.5s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* Running Status */
+.status-running {
+    color: #ffffff;
+    background-color: #4caf50; /* Green for running */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Paused Status */
+.status-paused {
+    color: #ffffff;
+    background-color: #ff9800; /* Orange for paused */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Stopped Status */
+.status-stopped {
+    color: #ffffff;
+    background-color: #f44336; /* Red for stopped */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

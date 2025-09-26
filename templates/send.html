@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Bulk Emails</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='send.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Send Bulk Emails</h1>
+    </header>
+
+    <main>
+        <!-- Email Form -->
+        <form id="email-form" action="{{ url_for('send_email') }}" method="post" enctype="multipart/form-data">
+            <!-- Email Configuration -->
+            <section>
+                <label for="sender_email">Select Email Configuration (Used Sequentially):</label>
+                <select name="sender_email" id="sender_email" required>
+                    {% for config in configurations %}
+                        <option value="{{ config.sender_email }}" data-password="{{ config.sender_password }}" data-smtp="{{ config.smtp_server }}" data-port="{{ config.smtp_port }}">
+                            {{ config.sender_email }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <!-- Hidden Inputs for Email Configuration -->
+                <input type="hidden" name="sender_password" id="sender_password">
+                <input type="hidden" name="smtp_server" id="smtp_server">
+                <input type="hidden" name="smtp_port" id="smtp_port">
+            </section>
+
+            <!-- File Upload -->
+            <section>
+                <label for="excel_file">Upload Excel File:</label>
+                <input type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" required>
+            </section>
+
+            <!-- Email Sending Options -->
+            <section>
+                <label for="delay">Delay Between Emails (seconds):</label>
+                <input type="number" id="delay" name="delay" step="0.1" value="5" required>
+
+                <label for="min_limit">Start Sending From Recipient:</label>
+                <input type="number" id="min_limit" name="min_limit" value="10" required>
+
+                <label for="max_limit">Stop Sending At Recipient:</label>
+                <input type="number" id="max_limit" name="max_limit" value="100" required>
+            </section>
+
+            <!-- Submit Button -->
+            <button type="submit">Send Emails</button>
+        </form>
+
+        <!-- Control Buttons and Progress Section -->
+        <section id="controls-and-progress" style="display: {% if sending %}block{% else %}none{% endif %};">
+            <div class="control-buttons">
+                <button id="pause-button">Pause</button>
+                <button id="resume-button">Resume</button>
+                <button id="stop-button">Stop</button>
+            </div>
+            <div class="progress">
+                <p>Total Emails: <span id="total-emails">0</span></p>
+                <p>Sent Emails: <span id="sent-emails">0</span></p>
+            </div>
+        </section>
+
+        <!-- Status Message -->
+        <div id="status-message" class="status-message"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Bulk Email Sender</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Auto-fill configuration fields
+        document.getElementById('sender_email').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            document.getElementById('sender_password').value = selectedOption.getAttribute('data-password');
+            document.getElementById('smtp_server').value = selectedOption.getAttribute('data-smtp');
+            document.getElementById('smtp_port').value = selectedOption.getAttribute('data-port');
+        });
+
+        // Track whether emails are being sent
+        let isSending = false;
+
+        // Show controls and progress after form submission
+        document.getElementById('email-form').addEventListener('submit', function(event) {
+            document.getElementById('controls-and-progress').style.display = 'block';
+            updateStatusMessage('Running', 'status-running');
+            isSending = true; // Set the sending state to true
+        });
+
+        // Handle Pause, Resume, and Stop buttons
+        document.getElementById('pause-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('/pause', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => updateStatusMessage('Paused', 'status-paused'))
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('resume-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('/resume', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => updateStatusMessage('Running', 'status-running'))
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('stop-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => updateStatusMessage('Stopped', 'status-stopped'))
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Function to update the status message
+        function updateStatusMessage(message, statusClass) {
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${statusClass}`;
+            statusMessage.style.display = 'block';
+        }
+
+        // Function to fetch and update progress
+        function updateProgress() {
+            fetch('/progress')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-emails').textContent = data.total_emails;
+                    document.getElementById('sent-emails').textContent = data.sent_emails;
+                })
+                .catch(error => console.error('Error fetching progress:', error));
+        }
+
+        // Update progress every 2 seconds
+        setInterval(updateProgress, 2000);
+    </script>
+</body>
+</html>

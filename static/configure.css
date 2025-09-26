@@ -1,0 +1,221 @@
+/* Global Styles */
+body {
+    background-color: #f4f6f9; /* Soft neutral background */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+    text-align: center; /* Ensure content is centered */
+}
+
+/* Heading Styles */
+h1, h2 {
+    color: #2d87f0; /* Cool blue for headings */
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Slight letter spacing for elegance */
+}
+
+/* h1 larger font size for emphasis */
+h1 {
+    font-size: 3rem;
+}
+
+/* h2 slightly smaller font size */
+h2 {
+    font-size: 2.4rem;
+}
+
+/* Form Styles */
+form {
+    background-color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+    padding: 50px 60px;
+    border-radius: 12px; /* More rounded corners */
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-out;
+    border-top: 6px solid #2d87f0; /* Accent color at the top */
+}
+
+/* Form Hover Effect */
+form:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect */
+    transform: translateY(-5px); /* Subtle lift effect */
+}
+
+/* Label Styles */
+label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* Input, Textarea, Select, Button Styles */
+input, textarea, select, button {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 2px solid #e0e0e0; /* Soft border for input fields */
+    border-radius: 8px;
+    background-color: #f9fafb;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Focus Effect on Inputs */
+input:focus, textarea:focus, select:focus, button:focus {
+    border-color: #2d87f0; /* Focus with blue border */
+    outline: none;
+    background-color: #e8f4ff; /* Light blue background on focus */
+    box-shadow: 0 0 10px rgba(45, 135, 240, 0.4); /* Subtle glow effect */
+}
+
+/* Button Styles */
+button {
+    background-color: #2d87f0;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Slight letter spacing for a modern look */
+}
+
+/* Button Hover Effects */
+button:hover {
+    background-color: #1e65c2;
+    transform: translateY(-4px); /* Lift on hover */
+}
+
+/* Send Mail Button Styling */
+.send-mail-btn {
+    background-color: #2d87f0;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Button Hover for Send Mails */
+.send-mail-btn:hover {
+    background-color: #1e65c2;
+    transform: translateY(-4px);
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    background-color: #2d87f0;
+    color: white;
+    padding: 25px;
+    margin-top: 40px;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    form {
+        width: 90%;
+        padding: 35px 25px;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .send-mail-btn {
+        font-size: 1rem;
+        padding: 10px 22px;
+    }
+}
+
+/* Error & Success Messages */
+.error, .success {
+    padding: 14px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+    font-size: 1.1rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Error Message */
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Success Message */
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Custom Select Input */
+select {
+    background-color: #f9fafb;
+    border: 2px solid #e0e0e0;
+    font-size: 1rem;
+    padding: 14px;
+    transition: border-color 0.3s ease;
+}
+
+/* File Upload Input */
+input[type="file"] {
+    padding: 14px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+}
+
+/* Tooltip or Instructions */
+.tooltip {
+    background-color: #2d87f0;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+/* Custom Animation for Error/Success Messages */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Subtle input focus effect */
+input:focus {
+    border-color: #2d87f0;
+    box-shadow: 0 0 10px rgba(45, 135, 240, 0.4);
+}
