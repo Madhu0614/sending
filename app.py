@@ -1,9 +1,7 @@
 import os
 import smtplib
-import csv
 import time
 import json
-import random
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -16,38 +14,38 @@ import threading
 
 # Load environment variables
 load_dotenv()
-# Initialize the Flask application
+
+# Initialize Flask
 app = Flask(__name__)
 
-# Define constants
+# Upload folder
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CONFIG_FILE = 'email_config.json'
 
-# Configure logging
+# Logging
 logging.basicConfig(level=logging.INFO)
 
-# Function to load configurations from the JSON file
+# Load/save config functions
 def load_configurations():
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, 'r') as f:
             return json.load(f)
     return []
 
-# Function to save configurations to the JSON file
 def save_configuration(new_config):
     configs = load_configurations()
     configs.append(new_config)
     with open(CONFIG_FILE, 'w') as f:
         json.dump(configs, f)
 
-# Function to extract pages from Word document without joining or editing
+# Extract pages from Word (if needed)
 def extract_pages_from_word(doc_path):
     document = Document(doc_path)
     pages = []
     page_content = []
-    
+
     for para in document.paragraphs:
         if 'w:br' in para._element.xml and 'w:type="page"' in para._element.xml:
             if page_content:
@@ -55,7 +53,7 @@ def extract_pages_from_word(doc_path):
             page_content = []
         else:
             page_content.append(para.text)
-    
+
     if page_content:
         pages.append('\n'.join(page_content))
 
@@ -63,8 +61,8 @@ def extract_pages_from_word(doc_path):
 
 # Global state
 paused = False
-current_index = 0
 stop_sending = False
+current_index = 0
 total_emails = 0
 sent_emails = 0
 email_thread = None
@@ -104,17 +102,25 @@ def get_progress():
 
 # Bulk email sender
 def send_bulk_emails(excel_file, delay, min_limit, max_limit):
-    global paused, current_index, stop_sending, total_emails, sent_emails
+    global paused, stop_sending, current_index, total_emails, sent_emails
     email_configs = load_configurations()
 
     if not email_configs:
-        raise ValueError("No email configurations found. Please add at least one sender configuration.")
+        logging.error("No email configurations found.")
+        return
 
-    df = pd.read_excel(excel_file)
+    try:
+        df = pd.read_excel(excel_file)
+    except Exception as e:
+        logging.error(f"Failed to read Excel file: {e}")
+        return
+
+    # Adjust limits safely
     min_limit = max(1, min_limit)
     max_limit = min(len(df), max_limit)
     if min_limit > max_limit:
-        raise ValueError("min_limit cannot be greater than max_limit.")
+        logging.warning("min_limit > max_limit, adjusting values")
+        min_limit, max_limit = max_limit, min_limit
 
     with state_lock:
         total_emails = max_limit - min_limit + 1
@@ -141,7 +147,7 @@ def send_bulk_emails(excel_file, delay, min_limit, max_limit):
         sender_name = config.get('sender_name', '')
         sender_password = config.get('sender_password', None)
 
-        recipient_email = row['email'].strip()
+        recipient_email = row.get('email', '').strip()
         first_name = str(row.get('first_name', '')).strip()
         last_name = str(row.get('last_name', '')).strip()
         company_name = str(row.get('company_name', '')).strip()
@@ -152,11 +158,15 @@ def send_bulk_emails(excel_file, delay, min_limit, max_limit):
             continue
 
         # Personalization
-        subject = subject.replace("{first_name}", first_name).replace("{last_name}", last_name).replace("{company_name}", company_name)
-        body = body.replace("{first_name}", first_name).replace("{last_name}", last_name).replace("{company_name}", company_name).replace("{sender_name}", sender_name)
+        subject = subject.replace("{first_name}", first_name)\
+                         .replace("{last_name}", last_name)\
+                         .replace("{company_name}", company_name)
+        body = body.replace("{first_name}", first_name)\
+                   .replace("{last_name}", last_name)\
+                   .replace("{company_name}", company_name)\
+                   .replace("{sender_name}", sender_name)
 
         try:
-            # Format as HTML
             html_body = body.replace("\n•", "<br>&bull;").replace("\n", "<br>")
             html_content = f"<html><body>{html_body}</body></html>"
 
@@ -166,33 +176,33 @@ def send_bulk_emails(excel_file, delay, min_limit, max_limit):
             msg['Subject'] = subject
             msg.attach(MIMEText(html_content, 'html', 'utf-8'))
 
-            # Connect to SMTP/PMTA
+            # SMTP/PMTA connection
             server = smtplib.SMTP(smtp_server, smtp_port)
             server.set_debuglevel(1)
 
-            # Only use login if credentials exist (e.g., Outlook/Gmail)
+            # Login only if password exists
             if sender_password:
                 server.starttls()
                 server.login(sender_email, sender_password)
 
-            # Send
             server.sendmail(sender_email, recipient_email, msg.as_string())
             server.quit()
-            logging.info(f"✅ Sent email to {recipient_email} via {sender_email}")
 
+            logging.info(f"✅ Sent email to {recipient_email} via {sender_email}")
             time.sleep(delay)
-            count += 1
+
             with state_lock:
                 sent_emails += 1
                 current_index = i + 1
 
             config_index = (config_index + 1) % len(email_configs)
+            count += 1
 
         except Exception as e:
             logging.error(f"❌ Failed to send email to {recipient_email} using {sender_email}: {e}")
             continue
 
-    logging.info(f"Finished. Total sent: {count}")
+    logging.info(f"Finished sending emails. Total sent: {count}")
 
 # Routes
 @app.route('/', methods=['GET', 'POST'])
@@ -234,9 +244,6 @@ def send_email():
             min_limit = int(request.form.get('min_limit', '10'))
             max_limit = int(request.form.get('max_limit', '100'))
 
-            if min_limit > max_limit:
-                min_limit, max_limit = max_limit, min_limit
-
             excel_file = request.files.get('excel_file')
             excel_file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(excel_file.filename))
             excel_file.save(excel_file_path)
@@ -262,4 +269,4 @@ def send_email():
     return render_template('send.html', configurations=configurations, sending=email_thread and email_thread.is_alive())
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
